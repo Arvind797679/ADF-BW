@@ -1,0 +1,9 @@
+{
+	"name": "formulaonebw-project",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "5184610f-d7d4-417b-ba66-9d2978edd874",
+		"tenantId": "9f9a7561-9cc6-486c-ae0f-bc075a6d33ca"
+	}
+}
