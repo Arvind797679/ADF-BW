@@ -1,0 +1,9 @@
+{
+	"name": "PROJECT-DATA-FACTORY-BW",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3f6692be-c65d-4118-906c-8ff0ae20427b",
+		"tenantId": "c5799163-be03-441a-b298-34b15afff2df"
+	}
+}
