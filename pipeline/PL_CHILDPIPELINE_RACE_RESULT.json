@@ -5,11 +5,18 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Lookup_race_result",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.race_list",
+						"value": "@activity('Lookup_race_result').output.value[0].MRData.RaceTable.Races",
 						"type": "Expression"
 					},
 					"activities": [
@@ -124,19 +131,44 @@
 				}
 			},
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "Lookup_race_result",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "DS_SEASONS_SINK_DATA",
+						"type": "DatasetReference",
+						"parameters": {
+							"dir_name": "@concat('/bronze/races/',string(utcnow('yyyyMMdd')))",
+							"file_name": "@concat(item().season,'_race')"
+						}
+					},
+					"firstRowOnly": false
+				}
 			}
 		],
 		"parameters": {
-			"race_list": {
-				"type": "array"
+			"season_year": {
+				"type": "string"
 			}
 		},
 		"variables": {
