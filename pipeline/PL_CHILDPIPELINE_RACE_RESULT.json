@@ -93,7 +93,8 @@
 								"sink": {
 									"type": "JsonSink",
 									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
+										"type": "AzureBlobFSWriteSettings",
+										"copyBehavior": "MergeFiles"
 									},
 									"formatSettings": {
 										"type": "JsonWriteSettings"
@@ -158,8 +159,14 @@
 						"referenceName": "DS_SEASONS_SINK_DATA",
 						"type": "DatasetReference",
 						"parameters": {
-							"dir_name": "@concat('/bronze/races/',string(utcnow('yyyyMMdd')))",
-							"file_name": "@concat(item().season,'_race')"
+							"dir_name": {
+								"value": "@concat('/bronze/races/',string(utcNow('yyyyMMdd')))",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@concat(item().season,'_race')",
+								"type": "Expression"
+							}
 						}
 					},
 					"firstRowOnly": false

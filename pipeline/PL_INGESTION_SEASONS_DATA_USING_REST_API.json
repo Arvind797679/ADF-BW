@@ -5,8 +5,6 @@
 			{
 				"name": "COPY_SEASONS_DATA",
 				"type": "Copy",
-				"state": "Active",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -41,7 +39,10 @@
 				"inputs": [
 					{
 						"referenceName": "DS_SOURCE_SEASONS_DATA",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"relative_url": "seasons.json?limit=100"
+						}
 					}
 				],
 				"outputs": [
@@ -50,7 +51,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"dir_name": {
-								"value": "@concat('/bronze/seasons',string(utcnow('yyyyMMdd')))",
+								"value": "@concat('/bronze/seasons/',string(utcnow('yyyyMMdd')))",
 								"type": "Expression"
 							},
 							"file_name": "seasons.json"
@@ -94,7 +95,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"dir_name": {
-								"value": "@concat('/bronze/seasons',string(utcnow('yyyyMMdd')))",
+								"value": "@concat('/bronze/seasons/',string(utcnow('yyyyMMdd')))",
 								"type": "Expression"
 							},
 							"file_name": "seasons.json"
@@ -120,6 +121,7 @@
 						"value": "@activity('Lookup_activity_Seasons').output.value[0].MRData.SeasonTable.Seasons",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Copy data1",
@@ -147,7 +149,8 @@
 								"sink": {
 									"type": "JsonSink",
 									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
+										"type": "AzureBlobFSWriteSettings",
+										"copyBehavior": "MergeFiles"
 									},
 									"formatSettings": {
 										"type": "JsonWriteSettings"
@@ -172,7 +175,7 @@
 									"referenceName": "DS_SEASONS_SINK_DATA",
 									"type": "DatasetReference",
 									"parameters": {
-										"dir_name": "@concat('/bronze/races',string(utcnow('yyyyMMdd')))",
+										"dir_name": "@concat('/bronze/races/',string(utcnow('yyyyMMdd')))",
 										"file_name": {
 											"value": "@concat(item().season,'_race')",
 											"type": "Expression"
@@ -180,11 +183,48 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "Execute_Pipeline_result",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "PL_CHILDPIPELINE_RACE_RESULT",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"season_year": {
+										"value": "@item().season",
+										"type": "Expression"
+									}
+								}
+							}
 						}
 					]
 				}
 			}
 		],
+		"variables": {
+			"season_year": {
+				"type": "String"
+			},
+			"round_id": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
