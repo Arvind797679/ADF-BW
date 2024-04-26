@@ -104,11 +104,15 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "DS_SOURCE_SEASONS_DATA",
+									"referenceName": "DS_RESULTS_SOURCE_DATA",
 									"type": "DatasetReference",
 									"parameters": {
-										"relative_url": {
-											"value": "@concat(variables('season_year'),'/',variables('round_id'),'/results.json?limit=100')",
+										"season": {
+											"value": "@variables('season_year')",
+											"type": "Expression"
+										},
+										"round": {
+											"value": "@variables('round_id')",
 											"type": "Expression"
 										}
 									}
@@ -123,7 +127,10 @@
 											"value": "@concat('/bronze/result/',string(utcnow('yyyyMMdd')))",
 											"type": "Expression"
 										},
-										"file_name": "race_result"
+										"file_name": {
+											"value": "@concat(variables('season_year'),'_',variables('round_id'),'.json')",
+											"type": "Expression"
+										}
 									}
 								}
 							]
