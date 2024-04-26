@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "COPY_SEASONS_DATA",
+				"description": "This Copy data Activity is used to copy data from API to ADLS Gen 2",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -61,6 +62,7 @@
 			},
 			{
 				"name": "Lookup_activity_Seasons",
+				"description": "This look up activity reads data from Seasons file",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -106,6 +108,7 @@
 			},
 			{
 				"name": "ForEach_activity_seasons_data",
+				"description": "This ForEach activity is used to iterate on Seasons data yearwise",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -124,7 +127,8 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "Copy data_Race",
+							"description": "This Copy Activity is used to Copy Race data from API to ADLS Gen 2",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -189,7 +193,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "Copy data1",
+									"activity": "Copy data_Race",
 									"dependencyConditions": [
 										"Succeeded"
 									]

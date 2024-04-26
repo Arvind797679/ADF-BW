@@ -3,11 +3,12 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach1",
+				"name": "ForEach Activity for Iterating Round",
+				"description": "This Activity is used to Iterate Round in Race Result",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup_race_result",
+						"activity": "Lookup_Race",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -23,6 +24,7 @@
 					"activities": [
 						{
 							"name": "Set variable_activity_for_year",
+							"description": "This Activity is used to set Season Year",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -40,6 +42,7 @@
 						},
 						{
 							"name": "Set variable_activity_for_round",
+							"description": "This Activity is Used to Set Round ID",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -56,7 +59,8 @@
 							}
 						},
 						{
-							"name": "Copy data_result",
+							"name": "Copy data_Result",
+							"description": "This Activity will Copy Result data from API to ADLS Gen 2",
 							"type": "Copy",
 							"dependsOn": [
 								{
@@ -140,7 +144,8 @@
 				}
 			},
 			{
-				"name": "Lookup_race_result",
+				"name": "Lookup_Race",
+				"description": "This Look up Activity reads data from Race",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
