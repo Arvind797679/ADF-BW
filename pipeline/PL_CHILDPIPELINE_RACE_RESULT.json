@@ -164,7 +164,7 @@
 								"type": "Expression"
 							},
 							"file_name": {
-								"value": "@concat(item().season,'_race')",
+								"value": "@concat(pipeline().parameters.season_year,'_race')",
 								"type": "Expression"
 							}
 						}
