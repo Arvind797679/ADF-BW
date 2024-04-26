@@ -49,7 +49,7 @@
 							"typeProperties": {
 								"variableName": "round_id",
 								"value": {
-									"value": "@item().round_id",
+									"value": "@item().round",
 									"type": "Expression"
 								}
 							}
@@ -175,7 +175,8 @@
 		],
 		"parameters": {
 			"season_year": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "1950"
 			}
 		},
 		"variables": {
